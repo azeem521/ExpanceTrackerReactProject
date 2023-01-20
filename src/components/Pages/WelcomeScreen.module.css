@@ -6,6 +6,7 @@
     align-items: center;
     justify-content: space-between;
     margin: auto;
+    margin-top: 20px;
 }
 
 .left{
@@ -17,4 +18,26 @@
     background-color: rgb(242, 199, 144);
     border-radius: 5px;
     
+}
+.verifyEmail{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 50px auto;
+    padding: 6px 9px;
+    background-color:#ffcc00;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.logout{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 50px auto;
+    padding: 6px 9px;
+    background-color:#ffcc00;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
