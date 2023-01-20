@@ -19,6 +19,7 @@ const Authentication = () => {
     }
 const passwordChangeHandler =(e)=>{
     setpassword(e.target.value)
+    SetisCursorAllow(false)
 }
 
     const confPassChangeHandler =(e)=>{
@@ -34,7 +35,7 @@ const passwordChangeHandler =(e)=>{
 
     const submitHandler =(e)=>{
         e.preventDefault()
-       if(password!==confPass){
+       if(!isLogin && (password!==confPass)){
         return alert('Password is not same')
        }
        else{
@@ -73,7 +74,7 @@ const passwordChangeHandler =(e)=>{
   return (
     <Fragment>
         <section className={classes.auth}>
-            <h1>{isLogin ? 'Login' : 'Sign Up'}</h1>
+            <h1>{isLogin ? 'Login' : 'Create new account'}</h1>
             <form onSubmit={submitHandler}>
                 <div className={classes.control}>
                     <label htmlFor='email'>Your Email</label>
@@ -83,14 +84,14 @@ const passwordChangeHandler =(e)=>{
                     <label htmlFor='password'>Your Password</label>
                     <input type='password'  required onChange={passwordChangeHandler} value={password} />
                 </div>
-                <div className={classes.control}>
+                {!isLogin && <div className={classes.control}>
                     <label htmlFor='confpassword'>Confirm Password</label>
-                    <input type='confpassword' required onChange={confPassChangeHandler} value={confPass} />
-                </div>
+                    <input type='password' required onChange={confPassChangeHandler} value={confPass} />
+                </div>}
                 <div className={classes.actions}>
                     <button type='submit' style={{'cursor':isCursorAllow ? 'not-allowed':'pointer'}} >{isLogin ? 'Login' : 'Create Account'}</button>
                     <button type='button' className={classes.toggle} onClick={switchAuthModeHandler}>{
-                        isLogin ? 'Create new account' : 'Login with existing account'
+                        isLogin ? "Don't have an account sign Up" : 'Login with existing account'
                     }</button>
                 </div>
             </form>
