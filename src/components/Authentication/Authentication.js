@@ -1,15 +1,15 @@
-import React, { Fragment, useRef, useState } from 'react'
+import React, { Fragment, useContext, useRef, useState } from 'react'
+import AuthContext from './auth-context';
 import classes from './Authentication.module.css'
 
 const Authentication = () => {
     const [isLogin,setIsLogin]=useState(true);
-    // const emailInputRef=useRef('');
-    // const passwordInputRef=useRef('');
-    // const confpasswordInputRef=useRef('');
     const [isCursorAllow,SetisCursorAllow]=useState(true)
     const [email,setemail]=useState('');
     const [password,setpassword]=useState('');
-    const [confPass,setconfPass]=useState('')
+    const [confPass,setconfPass]=useState('');
+
+    const ctx=useContext(AuthContext)
 
 
 
@@ -58,6 +58,7 @@ const passwordChangeHandler =(e)=>{
         }).then((res)=>{
             if(res.ok){
                 console.log('Successfully signed up.');
+                ctx.login();
             }else{
                 const data=res.json();
                 data.then((resp)=>{
