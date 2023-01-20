@@ -1,0 +1,20 @@
+
+
+.main{
+    width: 95vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: auto;
+}
+
+.left{
+
+}
+
+.right{
+    padding: 5px 5px;
+    background-color: rgb(242, 199, 144);
+    border-radius: 5px;
+    
+}
