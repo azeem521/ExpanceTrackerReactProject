@@ -1,4 +1,5 @@
 import React, { Fragment, useContext, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import AuthContext from './auth-context';
 import classes from './Authentication.module.css'
 
@@ -8,6 +9,7 @@ const Authentication = () => {
     const [email,setemail]=useState('');
     const [password,setpassword]=useState('');
     const [confPass,setconfPass]=useState('');
+    const history = useNavigate();
 
     const ctx=useContext(AuthContext)
 
@@ -56,9 +58,16 @@ const passwordChangeHandler =(e)=>{
                 'Content-Type': 'application/json'
             }
         }).then((res)=>{
+            const resp=res.json();
+            resp.then((respo)=>{
+                console.log('respo',respo);
+                localStorage.setItem('idToken',respo.idToken);
+            })
             if(res.ok){
+                
                 console.log('Successfully signed up.');
                 ctx.login();
+                history('/')
             }else{
                 const data=res.json();
                 data.then((resp)=>{
