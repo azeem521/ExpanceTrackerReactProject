@@ -8,6 +8,8 @@ import WelcomeScreen from './components/Pages/WelcomeScreen';
 import { Route, Routes } from 'react-router-dom';
 import CompleteProfile from './components/Pages/CompleteProfile/CompleteProfile';
 import ForgotPassword from './components/Pages/forgotPassword/ForgotPassword';
+import ExpenseItems from './components/Pages/Expense/ExpenseItems';
+import Store from './components/storeOfData/Store';
 
 function App() {
 
@@ -16,6 +18,8 @@ function App() {
   return (
     
     <Fragment>
+       <Store>
+      
       <Routes>
         <Route path='/' element= {!ctx.isLogin ? <Authentication /> : <WelcomeScreen />} />
         <Route path='/completeprofile' element={!ctx.isLogin ? <Authentication /> : <CompleteProfile />} />
@@ -23,6 +27,7 @@ function App() {
 
 
       </Routes>
+      </Store>
      
       </Fragment>
   );

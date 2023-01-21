@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom';
 import classes from './ContactDetail.module.css'
 
 const ContactDetail = () => {
@@ -86,7 +87,7 @@ fetch(url,{
         <div className={classes.ContactDetail}>
         Contact Details
         </div>
-        <button className={classes.cancel}>Cancel</button>
+       <Link to='/'> <button className={classes.cancel}>Cancel</button></Link>
     </div>
     <div className={classes.input}>
       <div className={classes.left}>
