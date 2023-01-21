@@ -1,5 +1,5 @@
 import React, { Fragment, useContext, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from './auth-context';
 import classes from './Authentication.module.css'
 
@@ -99,6 +99,7 @@ const passwordChangeHandler =(e)=>{
                     <input type='password' required onChange={confPassChangeHandler} value={confPass} />
                 </div>}
                 <div className={classes.actions}>
+                   {isLogin && <Link className={classes.forget} to='/forgotPassword'>Forgot Password ?</Link>}
                     <button type='submit' style={{'cursor':isCursorAllow ? 'not-allowed':'pointer'}} >{isLogin ? 'Login' : 'Create Account'}</button>
                     <button type='button' className={classes.toggle} onClick={switchAuthModeHandler}>{
                         isLogin ? "Don't have an account sign Up" : 'Login with existing account'

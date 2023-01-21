@@ -71,4 +71,8 @@
     color: #ae82cc;
   }
  
-  
+  .forget{
+    color: white ;
+    text-decoration: none;
+    margin-bottom: 10px;
+  }
