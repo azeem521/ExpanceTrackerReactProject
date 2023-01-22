@@ -1,12 +1,25 @@
-import React, { Fragment, useContext, useEffect } from 'react'
+import React, { Fragment, useContext, useEffect, useState } from 'react'
 import { StoreData } from '../../storeOfData/Store'
 
 const ExpenseTable = () => {
+  const [reRender,setreRender]=useState(true)
 
     const ctx=useContext(StoreData);
 
     const url='https://expancetrackerauth-default-rtdb.firebaseio.com/';
-    const email=localStorage.getItem('email')
+    const email=localStorage.getItem('email');
+
+    const toDeleteData=async(id)=>{
+      const resp=await fetch(`${url}${email}/${id}.json`,{
+        method:'DELETE',
+        headers:{
+          'Content-Type':'application/json'
+      }
+      });
+      const respo=await resp.json();
+      setreRender((prev)=>!prev)
+      console.log('respo',respo,id);
+    }
 
     useEffect(() => {
       async function fetchMyAPI() {
@@ -23,7 +36,7 @@ const ExpenseTable = () => {
       }
   
       fetchMyAPI()
-    }, [])
+    }, [reRender])
 
   return (
     <Fragment>
@@ -43,13 +56,13 @@ const ExpenseTable = () => {
    
 {
     ctx.items.map((item,indx)=>(
-        <tr>
-        <th scope="row" key={item.id}>{indx+1}</th>
+        <tr key={item.id}>
+        <th scope="row">{indx+1}</th>
         <td>{item.amount}</td>
         <td>{item.catagory}</td>
         <td>{item.decription}</td>
         <td><button type='button' className='btn btn-warning' >Edit</button></td>
-        <td><button type='button' className='btn btn-danger' >Delete</button></td>
+        <td><button type='button' className='btn btn-danger' onClick={toDeleteData.bind(null,item.id)}>Delete</button></td>
       </tr>
     ))
 }
