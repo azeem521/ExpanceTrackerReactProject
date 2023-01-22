@@ -52,11 +52,8 @@
     padding: 0 30px;
 }
 .form{
-    width: 50%;
+    width: 80%;
     margin: auto;
-    border: 1px solid grey;
-    padding: 20px;
-    border-radius: 5px;
 }
 
 .table{
