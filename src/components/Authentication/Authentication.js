@@ -62,6 +62,7 @@ const passwordChangeHandler =(e)=>{
             resp.then((respo)=>{
                 console.log('respo',respo);
                 localStorage.setItem('idToken',respo.idToken);
+                localStorage.setItem('email',email.replace(/[@.]/g,''))
             })
             if(res.ok){
                 

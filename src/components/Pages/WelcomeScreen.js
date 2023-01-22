@@ -1,4 +1,4 @@
-import React, { Fragment, useContext } from 'react'
+import React, { Fragment, useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 import AuthContext from '../Authentication/auth-context'
 import Store, { StoreData } from '../storeOfData/Store'
@@ -7,8 +7,14 @@ import ExpenseTable from './Expense/ExpenseTable'
 import classes from './WelcomeScreen.module.css'
 
 const WelcomeScreen = () => {
+    const [showExp,setshowExp]=useState(false)
 
-    const ctx=useContext(StoreData)
+    const authCtx=useContext(AuthContext)
+    const ctx=useContext(StoreData);
+
+    const showExpenseHandler=()=>{
+        setshowExp((prev)=>!prev);
+    }
 
     const url='https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyAzlQHFRtkaZpExFfx1mBDR64QU8JL9mO4'
 
@@ -33,6 +39,8 @@ const WelcomeScreen = () => {
         })
     }
 
+
+
   return (
     <Fragment>
        
@@ -46,14 +54,20 @@ const WelcomeScreen = () => {
         </div>
         <div className={classes.buttons}>
        
-        <button className={classes.logout} onClick={()=>ctx.logout()}>logout</button>
+        <button className={classes.logout} onClick={()=>authCtx.logout()}>logout</button>
         <button type='submit' onClick={verifyEmailHandler} className={classes.verifyEmail}>Verify Email</button>
         </div>
         <div className={classes.line}></div>
-        <div className={classes.form}>
-        <ExpenseItems />
+        <div className={classes.addExp}>
+        <button type="button" className="btn btn-secondary" onClick={showExpenseHandler}>{!showExp ? '+Add Expense' : 'Close'}</button>
         </div>
-      <ExpenseTable />
+      {showExp &&  <div className={classes.form}>
+        <ExpenseItems />
+        </div>}
+        <div className={classes.table}>
+        <ExpenseTable />
+        </div>
+      
      
     </Fragment>
   )

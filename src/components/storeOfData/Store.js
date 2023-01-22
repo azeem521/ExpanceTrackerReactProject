@@ -8,11 +8,15 @@ export const StoreData=React.createContext();
 const Store = (props) => {
     const [items,setItems]=useState([]);
 
-    const addItemHandler =(newItem)=>{
-        setItems([...items,newItem]);
+    const addItemHandler = async (newItem)=>{
+        const data=await newItem
+        // setItems([data]);
+        setItems([...data]);
+        console.log(items);
     }
     
     const storeValue={
+      // items:[],
         items:items,
         addItem:addItemHandler
     }
