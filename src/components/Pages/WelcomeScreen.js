@@ -1,14 +1,17 @@
 import React, { Fragment, useContext, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import AuthContext from '../Authentication/auth-context'
 import Store, { StoreData } from '../storeOfData/Store'
+import { authAction } from '../storeRedux/authReducer'
 import ExpenseItems from './Expense/ExpenseItems'
 import classes from './WelcomeScreen.module.css'
 
 const WelcomeScreen = () => {
-    
+    // Redux
+    const dispatch=useDispatch()
 
-    const authCtx=useContext(AuthContext)
+    // const authCtx=useContext(AuthContext)
     const ctx=useContext(StoreData);
 
     
@@ -51,7 +54,7 @@ const WelcomeScreen = () => {
         </div>
         <div className={classes.buttons}>
        
-        <button className={classes.logout} onClick={()=>authCtx.logout()}>logout</button>
+        <button className={classes.logout} onClick={()=>dispatch(authAction.logout())}>logout</button>
         <button type='submit' onClick={verifyEmailHandler} className={classes.verifyEmail}>Verify Email</button>
         </div>
         <div className={classes.line}></div>

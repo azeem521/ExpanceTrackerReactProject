@@ -10,24 +10,27 @@ import CompleteProfile from './components/Pages/CompleteProfile/CompleteProfile'
 import ForgotPassword from './components/Pages/forgotPassword/ForgotPassword';
 import ExpenseItems from './components/Pages/Expense/ExpenseItems';
 import Store from './components/storeOfData/Store';
+import { useSelector } from 'react-redux';
 
 function App() {
 
-  const ctx =useContext(AuthContext)
+  // const ctx =useContext(AuthContext)
+  // Redux
+  const isAuth=useSelector(state=>state.auth.isAthenticated);
 
   return (
     
     <Fragment>
-       <Store>
+       {/* <Store> */}
       
       <Routes>
-        <Route path='/' element= {!ctx.isLogin ? <Authentication /> : <WelcomeScreen />} />
-        <Route path='/completeprofile' element={!ctx.isLogin ? <Authentication /> : <CompleteProfile />} />
+        <Route path='/' element= {!isAuth ? <Authentication /> : <WelcomeScreen />} />
+        <Route path='/completeprofile' element={!isAuth ? <Authentication /> : <CompleteProfile />} />
         <Route path='/forgotPassword' element={<ForgotPassword />} />
 
 
       </Routes>
-      </Store>
+      {/* </Store> */}
      
       </Fragment>
   );

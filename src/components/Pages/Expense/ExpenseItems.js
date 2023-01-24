@@ -1,5 +1,7 @@
 import React, { Fragment, useContext, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import { StoreData } from '../../storeOfData/Store';
+import { expAction } from '../../storeRedux/expenseReducer';
 import classes from './ExpenseItems.module.css'
 
 const ExpenseItems = () => {
@@ -10,7 +12,13 @@ const ExpenseItems = () => {
     const [id,setid]=useState(null);
     const [isEditing,setisEditing]=useState(false);
     const [showExp,setshowExp]=useState(false)
-    const ctx=useContext(StoreData);
+
+    // const auth=useSelector(state=>state.auth.isAthenticated)
+
+    // const ctx=useContext(StoreData);
+    //Redux
+    const dispatch=useDispatch();
+    const totalItem=useSelector(state=>state.exp.items)
 
      const [reRender,setreRender]=useState(true)
 
@@ -42,8 +50,9 @@ const ExpenseItems = () => {
       for(let key in data){
         newItem.push({id:key,...data[key]})
       }
-      ctx.addItem(newItem);
-      console.log('newItem',newItem);
+      // ctx.addItem(newItem);
+      dispatch(expAction.addItemHandler(newItem));
+      // console.log('newItem',newItem);
      
 
 
@@ -72,13 +81,12 @@ const ExpenseItems = () => {
       });
       const respo=await resp.json();
       setreRender((prev)=>!prev)
-      console.log('respo',respo,id);
+      // console.log('respo',respo,id);
     };
 
 
     const submitHandler= async(e)=>{
       e.preventDefault();
-     console.log('ctx.items',ctx.items);
 
      if(!isEditing){
 
@@ -94,7 +102,7 @@ const ExpenseItems = () => {
         }
        });
        const data1=await response.json();
-       console.log('data222',data1);
+      //  console.log('data222',data1);
      }
 
      else{
@@ -111,7 +119,8 @@ const ExpenseItems = () => {
        });
        setisEditing(false);
      }
-     getDataFrom();
+     setreRender((prev)=>!prev)
+    //  getDataFrom();
      setAmount('')
        setCatagory('')
        setDiscription('')
@@ -129,8 +138,9 @@ const ExpenseItems = () => {
         for(let key in data){
           newItem.push({id:key,...data[key]})
         }
-        console.log('useEffectCalled',newItem);
-        ctx.addItem(newItem);
+        console.log('useEffectCalled');
+        // ctx.addItem(newItem);
+        dispatch(expAction.addItemHandler(newItem));
       }
   
       fetchMyAPI()
@@ -189,7 +199,9 @@ const ExpenseItems = () => {
     <tbody>
    
 {
-    ctx.items.map((item,indx)=>(
+    // ctx.items.map((item,indx)=>(
+      // Redux
+      totalItem.map((item,indx)=>(
         <tr key={item.id}>
         <th scope="row">{indx+1}</th>
         <td>{item.amount}</td>

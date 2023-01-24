@@ -13,18 +13,17 @@ const AuthProvider = (props) => {
     }
     const logoutHandler=()=>{
         localStorage.removeItem('idToken');
+        localStorage.removeItem('email');
         setuserIsLogin(false);
     };
 
-    const verificationHandler=()=>{
-
-    }
+    
 
     const authValues={
-        isLogin: userIsLogin ,
-        login:loginHandler,
-        logout:logoutHandler,
-        verification:verificationHandler
+    //     isLogin: userIsLogin ,
+    //     login:loginHandler,
+    //     logout:logoutHandler,
+    //     verification:verificationHandler
     }
   return (
     <AuthContext.Provider value={authValues}>

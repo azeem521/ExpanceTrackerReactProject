@@ -1,5 +1,7 @@
 import React, { Fragment, useContext, useRef, useState } from 'react'
+import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import { authAction } from '../storeRedux/authReducer';
 import AuthContext from './auth-context';
 import classes from './Authentication.module.css'
 
@@ -10,8 +12,10 @@ const Authentication = () => {
     const [password,setpassword]=useState('');
     const [confPass,setconfPass]=useState('');
     const history = useNavigate();
+    //Redux
+    const dispatch=useDispatch();
 
-    const ctx=useContext(AuthContext)
+    // const ctx=useContext(AuthContext)
 
 
 
@@ -67,8 +71,9 @@ const passwordChangeHandler =(e)=>{
             if(res.ok){
                 
                 console.log('Successfully signed up.');
-                ctx.login();
-                history('/')
+                // ctx.login();
+                dispatch(authAction.login());
+                history('/');
             }else{
                 const data=res.json();
                 data.then((resp)=>{
