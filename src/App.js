@@ -17,10 +17,12 @@ function App() {
   // const ctx =useContext(AuthContext)
   // Redux
   const isAuth=useSelector(state=>state.auth.isAthenticated);
+  const theme=useSelector(state=>state.theme.theme)
 
   return (
     
     <Fragment>
+      <div className={theme ? 'dark' : ''}>
        {/* <Store> */}
       
       <Routes>
@@ -31,7 +33,8 @@ function App() {
 
       </Routes>
       {/* </Store> */}
-     
+      </div>
+
       </Fragment>
   );
 }

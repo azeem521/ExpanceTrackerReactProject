@@ -36,3 +36,10 @@
     transform: rotate(360deg);
   }
 }
+
+.dark{
+  background: rgb(51, 47, 47);
+  color: white;
+  /* padding: 20px auto 20px auto; */
+  padding-top: 20px;
+}
