@@ -64,6 +64,9 @@ const passwordChangeHandler =(e)=>{
         }).then((res)=>{
             const resp=res.json();
             resp.then((respo)=>{
+                if(respo.error){
+                    alert(respo.error.message)
+                }
                 console.log('respo',respo);
                 localStorage.setItem('idToken',respo.idToken);
                 localStorage.setItem('email',email.replace(/[@.]/g,''))

@@ -12,8 +12,9 @@ const ExpenseItems = () => {
   const [id, setid] = useState(null);
   const [isEditing, setisEditing] = useState(false);
   const [showExp, setshowExp] = useState(false);
+  const [firstTime,setfirstTime]=useState(false)
 
-  // const auth=useSelector(state=>state.auth.isAthenticated)
+  
 
   // const ctx=useContext(StoreData);
   //Redux
@@ -21,6 +22,8 @@ const ExpenseItems = () => {
   const totalItem = useSelector((state) => state.exp.items);
 
   const [reRender, setreRender] = useState(true);
+  const theme=useSelector(state=>state.theme.theme);
+  // const isAthenticated=useSelector(state=>state.auth.)
 
   const amountChangeHandler = (e) => {
     setAmount(e.target.value);
@@ -40,7 +43,9 @@ const ExpenseItems = () => {
     dispatch(themeAction.themeChangeHandler())
   }
 
-  const url = "https://expancetrackerauth-default-rtdb.firebaseio.com/";
+  // const url = "https://expancetrackerauth-default-rtdb.firebaseio.com/";
+
+  const url = "https://newexptrareact-default-rtdb.firebaseio.com/";
   const email = localStorage.getItem("email");
 
   const getDataFrom = async () => {
@@ -59,6 +64,7 @@ const ExpenseItems = () => {
   };
 
   const editHandler = (id, amount1, catagory1, description1) => {
+    setshowExp(true)
     setisEditing(true);
     setid(id);
     setAmount(amount1);
@@ -136,6 +142,7 @@ const ExpenseItems = () => {
 
   useEffect(() => {
     async function fetchMyAPI() {
+      const email = localStorage.getItem("email");
       let response = await fetch(`${url}${email}.json`, {
         method: "GET",
       });
@@ -147,10 +154,12 @@ const ExpenseItems = () => {
       console.log("useEffectCalled");
       // ctx.addItem(newItem);
       dispatch(expAction.addItemHandler(newItem));
+      setfirstTime(true)
+
     }
 
     fetchMyAPI();
-  }, [reRender]);
+  }, [reRender,firstTime]);
 
   return (
     <Fragment>
@@ -163,7 +172,7 @@ const ExpenseItems = () => {
           {!showExp ? "+Add Expense" : "Close"}
         </button>
      {(totalAmount>=1000) &&  <button type="button"
-          className="btn btn-secondary" onClick={themeChangeHandler}>Change</button>}
+          className="btn btn-secondary" onClick={themeChangeHandler}>{!theme ? 'Dark Mode' : 'Light Mode'}</button>}
           {
             (totalAmount>=1000) &&  <button type="button"
             className="btn btn-secondary" >
@@ -229,7 +238,7 @@ const ExpenseItems = () => {
 
       <table className="table">
         <thead>
-          <tr>
+          <tr className={!theme ? '' : classes.dark} >
             <th scope="col">#</th>
             <th scope="col">Expense</th>
             <th scope="col">Catagory</th>
@@ -243,7 +252,7 @@ const ExpenseItems = () => {
             // ctx.items.map((item,indx)=>(
             // Redux
             totalItem.map((item, indx) => (
-              <tr key={item.id}>
+              <tr className={!theme ? '' : classes.dark}  key={item.id}>
                 <th scope="row">{indx + 1}</th>
                 <td>{item.amount}</td>
                 <td>{item.catagory}</td>

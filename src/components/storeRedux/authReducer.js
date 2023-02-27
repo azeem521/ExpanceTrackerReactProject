@@ -10,12 +10,12 @@ const authSlice=createSlice({
     initialState:initialAuthState,
     reducers:{
         login(state){
-            state.isAthenticated=true
+            state.isAthenticated=true;
         },
         logout(state){
             localStorage.removeItem('idToken');
             localStorage.removeItem('email');
-            state.isAthenticated=false
+            state.isAthenticated=false;
         }
     }
 });
