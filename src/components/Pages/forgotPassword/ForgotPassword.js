@@ -15,36 +15,33 @@ const ForgotPassword = () => {
 
     const url='https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyAzlQHFRtkaZpExFfx1mBDR64QU8JL9mO4'
 
-    const submitHandler=(e)=>{
+    const submitHandler=async(e)=>{
         e.preventDefault();
         setsending(true);
-        fetch(url,{
-            method:'POST',
-            body:JSON.stringify({
-                requestType:"PASSWORD_RESET",
-                email:email
-            }),
-            headers:{
-                'Content-Type': 'application/json'
-            }
-        }).then((res)=>{
-            setsending(false)
-            const resp=res.json();
-            resp.then((data)=>{
-                console.log(data);
-                if(data.error){
-                    alert(data.error.message)
-                }else{
-                    alert('Check your email inbox and reset password');
-                    redirect('/');
+        try {
+            const response=await fetch(url,{
+                method:'POST',
+                body:JSON.stringify({
+                    requestType:"PASSWORD_RESET",
+                    email:email
+                }),
+                headers:{
+                    'Content-Type': 'application/json'
                 }
-               
-
-            })
-        }).catch((err)=>{
+            });
             setsending(false)
-            console.log(err);
-        })
+            const data=await response.json();
+            console.log(data);
+            if(data.error){
+                alert(data.error.message)
+            }else{
+                alert('Check your email inbox and reset password');
+                redirect('/');
+            }
+        } catch (err) {
+            setsending(false)
+            alert(err)
+        }
     }
 
   return (

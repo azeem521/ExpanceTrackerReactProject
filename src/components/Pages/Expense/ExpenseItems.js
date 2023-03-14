@@ -12,7 +12,6 @@ const ExpenseItems = () => {
   const [id, setid] = useState(null);
   const [isEditing, setisEditing] = useState(false);
   const [showExp, setshowExp] = useState(false);
-  const [firstTime,setfirstTime]=useState(false)
 
   
 
@@ -21,7 +20,6 @@ const ExpenseItems = () => {
   const dispatch = useDispatch();
   const totalItem = useSelector((state) => state.exp.items);
 
-  const [reRender, setreRender] = useState(true);
   const theme=useSelector(state=>state.theme.theme);
   // const isAthenticated=useSelector(state=>state.auth.)
 
@@ -43,24 +41,23 @@ const ExpenseItems = () => {
     dispatch(themeAction.themeChangeHandler())
   }
 
-  // const url = "https://expancetrackerauth-default-rtdb.firebaseio.com/";
-
   const url = "https://newexptrareact-default-rtdb.firebaseio.com/";
   const email = localStorage.getItem("email");
 
   const getDataFrom = async () => {
-    const response = await fetch(`${url}${email}.json`, {
-      method: "GET",
-    });
-    const data = await response.json();
-    console.log("data111", data);
-    const newItem = [];
-    for (let key in data) {
-      newItem.push({ id: key, ...data[key] });
+    try {
+      const response = await fetch(`${url}${email}.json`);
+      const data = await response.json();
+      const newItem = [];
+      for (let key in data) {
+        newItem.push({ id: key, ...data[key] });
+      }
+      // ctx.addItem(newItem);
+      dispatch(expAction.addItemHandler(newItem));
+    } catch (err) {
+      alert(err)
     }
-    // ctx.addItem(newItem);
-    dispatch(expAction.addItemHandler(newItem));
-    // console.log('newItem',newItem);
+ 
   };
 
   const editHandler = (id, amount1, catagory1, description1) => {
@@ -73,53 +70,58 @@ const ExpenseItems = () => {
   };
 
   const toDeleteData = async (id) => {
-    const resp = await fetch(`${url}${email}/${id}.json`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const respo = await resp.json();
-    setreRender((prev) => !prev);
-    // console.log('respo',respo,id);
+    try {
+      const resp = await fetch(`${url}${email}/${id}.json`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const respo = await resp.json();
+      getDataFrom()
+    } catch (err) {
+      alert(err)
+    }
+    
   };
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
-    if (!isEditing) {
-      const response = await fetch(`${url}${email}.json`, {
-        method: "POST",
-        body: JSON.stringify({
-          amount: amount,
-          catagory: catagory,
-          decription: discription,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const data1 = await response.json();
-      //  console.log('data222',data1);
-    } else {
-      const res = await fetch(`${url}${email}/${id}.json`, {
-        method: "PUT",
-        body: JSON.stringify({
-          amount: amount,
-          catagory: catagory,
-          decription: discription,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      setisEditing(false);
-    }
-    setreRender((prev) => !prev);
-    //  getDataFrom();
-    setAmount("");
-    setCatagory("");
-    setDiscription("");
+try {
+  if (!isEditing) {
+    const response = await fetch(`${url}${email}.json`, {
+      method: "POST",
+      body: JSON.stringify({
+        amount: amount,
+        catagory: catagory,
+        decription: discription,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data1 = await response.json();
+  } else {
+    const res = await fetch(`${url}${email}/${id}.json`, {
+      method: "PUT",
+      body: JSON.stringify({
+        amount: amount,
+        catagory: catagory,
+        decription: discription,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    setisEditing(false);
+  }
+   getDataFrom();
+  setAmount("");
+  setCatagory("");
+  setDiscription("");
+} catch (err) {
+  alert(err)
+}
   };
  
 
@@ -141,25 +143,8 @@ const ExpenseItems = () => {
    const urlToDwnld=URL.createObjectURL(blob);
 
   useEffect(() => {
-    async function fetchMyAPI() {
-      const email = localStorage.getItem("email");
-      let response = await fetch(`${url}${email}.json`, {
-        method: "GET",
-      });
-      const data = await response.json();
-      const newItem = [];
-      for (let key in data) {
-        newItem.push({ id: key, ...data[key] });
-      }
-      console.log("useEffectCalled");
-      // ctx.addItem(newItem);
-      dispatch(expAction.addItemHandler(newItem));
-      setfirstTime(true)
-
-    }
-
-    fetchMyAPI();
-  }, [reRender,firstTime]);
+    getDataFrom()
+  }, []);
 
   return (
     <Fragment>

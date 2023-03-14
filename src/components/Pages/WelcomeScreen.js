@@ -18,25 +18,23 @@ const WelcomeScreen = () => {
 
     const url='https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyAzlQHFRtkaZpExFfx1mBDR64QU8JL9mO4'
 
-    const verifyEmailHandler=(e)=>{
+    const verifyEmailHandler=async(e)=>{
         e.preventDefault();
-        fetch(url,{
-            method:'POST',
-            body:JSON.stringify({
-                requestType:"VERIFY_EMAIL",
-                idToken:localStorage.getItem('idToken')
-            }),
-            headers:{
-                'Content-Type': 'application/json'
-            }
-        }).then((res)=>{
-            const data=res.json();
-            data.then((resp)=>{
-                console.log(resp);
-            })
-        }).catch((err)=>{
-            console.log('err',err)
-        })
+        try {
+            const response =await fetch(url,{
+                method:'POST',
+                body:JSON.stringify({
+                    requestType:"VERIFY_EMAIL",
+                    idToken:localStorage.getItem('idToken')
+                }),
+                headers:{
+                    'Content-Type': 'application/json'
+                }
+            });
+            alert('Check your email inbox')
+        } catch (error) {
+            alert(error)
+        }
     }
 
 

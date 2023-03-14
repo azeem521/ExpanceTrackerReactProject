@@ -3,18 +3,13 @@ import { Link } from 'react-router-dom';
 import classes from './ContactDetail.module.css'
 
 const ContactDetail = () => {
-
-
-
-
     const [name,setName]=useState();
     const [imgUrl,setImgUrl]=useState();
-
-
     const urlGet='https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyAzlQHFRtkaZpExFfx1mBDR64QU8JL9mO4';
 
-    const getDataHandler=()=>{
-        fetch(urlGet,{
+    const getDataHandler=async()=>{
+       try {
+        const response=await fetch(urlGet,{
             method:"POST",
             body:JSON.stringify({
                 idToken:localStorage.getItem('idToken')
@@ -22,14 +17,14 @@ const ContactDetail = () => {
             headers:{
                 'Content-Type':'application/json'
             }
-        }).then((res)=>{
-            const data =res.json();
-            data.then((resp)=>{
-                console.log(resp.users);
-                setName(resp.users[0].displayName)
-                setImgUrl(resp.users[0].photoUrl)
-            })
         })
+        const data=await response.json()
+        console.log('data',data);
+        setName(data.users[0].displayName)
+        setImgUrl(data.users[0].photoUrl)
+       } catch (err) {
+        console.log(err);
+       }
     }
 
     const nameChangeHandler=(e)=>{
@@ -42,39 +37,27 @@ const ContactDetail = () => {
 
     const url='https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyAzlQHFRtkaZpExFfx1mBDR64QU8JL9mO4'
 
-   
-
-    const submitHandler=(e)=>{
+    const submitHandler= async(e)=>{
         e.preventDefault();
 
-fetch(url,{
-    method:'POST',
-    body:JSON.stringify({
-        idToken:localStorage.getItem('idToken'),
-        displayName:name,
-        photoUrl:imgUrl,
-        // deleteAttribute: "NULL",
-        returnSecureToken:false
-    }),
-    headers:{
-        'Content-Type': 'application/json'
-    }
-}).then((res)=>{
-    const data=res.json();
-    data.then((resp)=>{
-        if(resp.error){
-            alert(resp.error.message)
-        }else{
-            console.log('resp',resp);
-
+try {
+    const response=await fetch(url,{
+        method:'POST',
+        body:JSON.stringify({
+            idToken:localStorage.getItem('idToken'),
+            displayName:name,
+            photoUrl:imgUrl,
+            // deleteAttribute: "NULL",
+            returnSecureToken:false
+        }),
+        headers:{
+            'Content-Type': 'application/json'
         }
     })
-}).catch((err)=>{
+    const data= await response.json();
+} catch (err) {
     alert(err);
-})
-
-        console.log(name);
-        console.log(imgUrl);
+}
     }
 
     useEffect(()=>getDataHandler(),[])
